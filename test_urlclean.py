@@ -20,6 +20,12 @@ VITALSOURCE_URL = (
     "&msclkid=e3d53e381f23132f7aa7547eb6aa0380"
 )
 
+ABEBOOKS_URL = (
+    "https://www.abebooks.com/servlet/BookDetailsPL?bi=31440603497&dest=USA"
+    "&ref_=ps_ms_370718797&cm_mmc=msn-_-comus_shopp_textbook-_-naa-_-naa"
+    "&msclkid=d586392f695a1e1177685369c0d3284c"
+)
+
 
 def test_ebay_affiliate_params_stripped():
     result = analyze(EBAY_URL)
@@ -39,6 +45,33 @@ def test_utm_and_msclkid_stripped_functional_kept():
     assert "utm_campaign" in result["tracking"]
     assert "msclkid" in result["tracking"]
     assert result["clean_url"].endswith("?duration=180")
+
+
+def test_abebooks_coremetrics_and_ref_stripped():
+    # Regression: cm_mmc (Coremetrics) and ref_ (Amazon-family) must be stripped
+    result = analyze(ABEBOOKS_URL)
+    assert result["clean_url"] == (
+        "https://www.abebooks.com/servlet/BookDetailsPL?bi=31440603497&dest=USA"
+    )
+    assert result["functional"] == {"bi": "31440603497", "dest": "USA"}
+    assert set(result["tracking"]) == {"ref_", "cm_mmc", "msclkid"}
+    assert result["removed"] == 3
+
+
+def test_cm_params_stripped_globally():
+    result = analyze(
+        "https://example.com/page?id=5&cm_mmc=email-_-promo-_-x-_-y"
+        "&cm_sp=hp-_-banner-_-top"
+    )
+    assert result["functional"] == {"id": "5"}
+    assert set(result["tracking"]) == {"cm_mmc", "cm_sp"}
+
+
+def test_ref_functional_off_amazon_family():
+    # 'ref_' is only a tracking param on Amazon-family domains
+    result = analyze("https://example.com/page?ref_=sidebar")
+    assert result["functional"] == {"ref_": "sidebar"}
+    assert result["tracking"] == {}
 
 
 def test_loc_is_functional_off_ebay():

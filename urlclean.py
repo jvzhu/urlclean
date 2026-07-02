@@ -25,6 +25,8 @@ TRACKING_PARAMS = {
     "irclickid", "clickid", "afid", "ranmid", "ranealid", "ransiteid",
     # Email marketing
     "mc_cid", "mc_eid", "_hsenc", "_hsmi", "mkt_tok",
+    # Coremetrics / IBM Analytics campaign params
+    "cm_mmc", "cm_sp", "cm_re", "cm_ven", "cm_cat", "cm_pla", "cm_ite",
     # Misc analytics
     "ref_src", "spm", "scm",
 }
@@ -35,6 +37,8 @@ DOMAIN_RULES = {
                 "loc", "amdata", "hash"},
     "amazon.": {"tag", "linkcode", "ref_", "pd_rd_r", "pd_rd_w", "pd_rd_wg",
                 "pf_rd_p", "pf_rd_r", "crid", "sprefix", "qid", "sr", "keywords"},
+    # Amazon-owned; uses the same ref_ convention (cm_mmc also global, kept for safety)
+    "abebooks.": {"ref_", "cm_mmc"},
     "aliexpress.": {"spm", "scm", "aff_fcid", "aff_fsk", "aff_platform",
                     "aff_trace_key", "terminal_id"},
 }

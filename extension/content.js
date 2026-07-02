@@ -3,10 +3,12 @@ const EXACT = new Set([
   "msclkid", "gclid", "gbraid", "wbraid", "dclid", "fbclid", "ttclid",
   "twclid", "li_fat_id", "igshid", "yclid", "epik", "irclickid", "clickid",
   "mc_cid", "mc_eid", "_hsenc", "_hsmi", "mkt_tok", "ref_src",
+  "cm_mmc", "cm_sp", "cm_re", "cm_ven", "cm_cat", "cm_pla", "cm_ite",
 ]);
 const DOMAIN_RULES = [
   [/ebay\./i, ["mkevt", "mkcid", "mkrid", "campid", "toolid", "customid", "loc", "amdata", "hash"]],
   [/amazon\./i, ["tag", "linkcode", "ref_", "pd_rd_r", "pd_rd_w", "pd_rd_wg", "pf_rd_p", "pf_rd_r", "crid", "sprefix", "qid", "sr", "keywords"]],
+  [/abebooks\./i, ["ref_", "cm_mmc"]],
   [/aliexpress\./i, ["spm", "scm", "aff_fcid", "aff_fsk", "aff_platform", "aff_trace_key", "terminal_id"]],
 ];
 
